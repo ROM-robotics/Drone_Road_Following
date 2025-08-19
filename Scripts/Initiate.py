@@ -11,6 +11,7 @@ def main():
     px4_dir = os.path.join(parent_dir, "Applications", "PX4-Autopilot")
     rviz_config_path = os.path.join(parent_dir, "Scripts", "config.rviz")
     qgc_path = os.path.join(parent_dir, "Applications", "QGroundControl.AppImage")
+    depthviz_path = os.path.join(parent_dir, "Scripts", "depviz.py")
 
     px4_cmd = ["make", "px4_sitl", "gz_x500_mono_cam_baylands"]
 
@@ -24,6 +25,10 @@ def main():
         "/world/baylands/model/x500_mono_cam_0/model/down_cam_left/link/camera_link/sensor/imager/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
         "/world/baylands/model/x500_mono_cam_0/model/down_cam_right/link/camera_link/sensor/imager/image@sensor_msgs/msg/Image@gz.msgs.Image",
         "/world/baylands/model/x500_mono_cam_0/model/down_cam_right/link/camera_link/sensor/imager/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+        # <<< NEW DEPTH CAMERA TOPICS >>>
+        "/world/baylands/model/x500_mono_cam_0/link/depth_cam_link/sensor/depth_camera_sensor/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+        "/world/baylands/model/x500_mono_cam_0/link/depth_cam_link/sensor/depth_camera_sensor/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
+        "/world/baylands/model/x500_mono_cam_0/link/depth_cam_link/sensor/depth_camera_sensor/depth_image/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked",
         "--ros-args",
         "-r", "/world/baylands/model/x500_mono_cam_0/model/front_left_cam/link/camera_link/sensor/imager/image:=/camera/front_left/image",
         "-r", "/world/baylands/model/x500_mono_cam_0/model/front_left_cam/link/camera_link/sensor/imager/camera_info:=/camera/front_left/camera_info",
@@ -32,8 +37,13 @@ def main():
         "-r", "/world/baylands/model/x500_mono_cam_0/model/down_cam_left/link/camera_link/sensor/imager/image:=/camera/down_left/image",
         "-r", "/world/baylands/model/x500_mono_cam_0/model/down_cam_left/link/camera_link/sensor/imager/camera_info:=/camera/down_left/camera_info",
         "-r", "/world/baylands/model/x500_mono_cam_0/model/down_cam_right/link/camera_link/sensor/imager/image:=/camera/down_right/image",
-        "-r", "/world/baylands/model/x500_mono_cam_0/model/down_cam_right/link/camera_link/sensor/imager/camera_info:=/camera/down_right/camera_info"
+        "-r", "/world/baylands/model/x500_mono_cam_0/model/down_cam_right/link/camera_link/sensor/imager/camera_info:=/camera/down_right/camera_info",
+        # <<< NEW DEPTH CAMERA REMAPS >>>
+        "-r", "/world/baylands/model/x500_mono_cam_0/link/depth_cam_link/sensor/depth_camera_sensor/camera_info:=/camera/depth/camera_info",
+        "-r", "/world/baylands/model/x500_mono_cam_0/link/depth_cam_link/sensor/depth_camera_sensor/depth_image:=/camera/depth/image",
+        "-r", "/world/baylands/model/x500_mono_cam_0/link/depth_cam_link/sensor/depth_camera_sensor/depth_image/points:=/camera/depth/points",
     ]
+
     bridge_cmd_str = " ".join(bridge_params) + "; exec bash"
 
     mavros_params = [
@@ -70,6 +80,7 @@ def main():
     spawn_terminal(mavros_cmd_str)
     spawn_terminal(rviz_cmd_str)
     spawn_terminal(qgc_cmd_str)
+    spawn_terminal(depthviz_cmd_str)
 
     def shutdown(sig, frame):
         print("\n🛑 Ctrl+C detected—shutting down everything…")
@@ -104,4 +115,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

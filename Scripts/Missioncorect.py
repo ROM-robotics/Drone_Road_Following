@@ -116,7 +116,7 @@ class MissionControllerNode(Node):
         self.road_line_img = None
 
         # --- ANGULAR ALIGN + EMA PARAMETERS (fitLine) ---
-        self.kp_yaw = 0.2                 # P-gain for yaw correction (tweak in sim)
+        self.kp_yaw = 0.5                 # P-gain for yaw correction (tweak in sim)
         self.angle_tolerance = 0.2          # radians (~6°) tolerance before moving forward
         self.filtered_angle_error = None
         self.alpha_angle = 0.2              # EMA alpha for angle_error (0 < α < 1)
@@ -131,7 +131,7 @@ class MissionControllerNode(Node):
         self.target_altitude = 10.0         # meters
         self.altitude_tolerance = 0.3       # meters
         self.takeoff_timeout = 30.0         # seconds
-        self.forward_speed = 3.0            # m/s (body-frame forward)
+        self.forward_speed = 3          # m/s (body-frame forward)
 
         # Start the 10 Hz control loop
         self.create_timer(0.1, self.control_loop)
