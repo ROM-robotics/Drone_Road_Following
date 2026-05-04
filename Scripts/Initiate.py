@@ -13,7 +13,7 @@ def main():
     qgc_path = os.path.join(parent_dir, "Applications", "QGroundControl.AppImage")
     depthviz_path = os.path.join(parent_dir, "Scripts", "depviz.py")
 
-    px4_cmd = ["make", "px4_sitl", "gz_x500_mono_cam_baylands"]
+    px4_cmd = ["make", "px4_sitl", "gz_x500"]
 
     bridge_params = [
         "ros2", "run", "ros_gz_bridge", "parameter_bridge",
